@@ -81,10 +81,7 @@ def clone_or_update(config, url, path, head, private=False):
         fetch(path, 'origin')
     else:
         log.debug('Repository does not exist, cloning a new one.')
-        if not private:
-            clone(url, path)
-        else:
-            private_clone(config, url, path)
+        private_clone(config, url, path)
     log.info("Checking out '%s'", head)
     checkout(path, head)
 
