@@ -8,7 +8,8 @@ services:
     networks:
       - back-tier
   web:
-    image: markstory/lint-review
+    image: lintreview
+    build: .
     command:
       - gunicorn
       - -c
@@ -23,6 +24,11 @@ services:
       LINTREVIEW_GUNICORN_BIND: '0.0.0.0:5000'
       LINTREVIEW_GUNICORN_LOG_ACCESS: '-'
       LINTREVIEW_GUNICORN_LOG_ERROR: '-'
+      LINTREVIEW_PULLREQUEST_STATUS: 'true'
+      LINTREVIEW_OK_COMMENT: ':heart_eyes: No lint errors found. :+1:'
+      GITHUB_USERNAME: "${GITHUB_USERNAME}"
+      GITHUB_URL: "${GITHUB_URL}"
+      GITHUB_OAUTH_TOKEN: "${GITHUB_OAUTH_TOKEN}"
     ports:
       - "5000:5000"
     links:
@@ -34,7 +40,8 @@ services:
       - broker
       - worker
   worker:
-    image: markstory/lint-review
+    image: lintreview
+    build: .
     command:
       - celery
       - -A
