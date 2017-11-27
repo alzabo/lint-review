@@ -1,0 +1,1 @@
+class eof_error {

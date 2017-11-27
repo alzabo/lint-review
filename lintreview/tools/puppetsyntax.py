@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 import os
 import logging
+import re
 from lintreview.tools import Tool
 from lintreview.tools import run_command
 from lintreview.utils import in_path
@@ -56,15 +57,18 @@ class PuppetSyntax(Tool):
     def _parse_line(self, line):
         """
         `puppet parser validate <file>` lines look like this:
-        <message> at <filename>:<lineno>:<charno>
+        <severity>:<message> at <filename>:<lineno>:<charno>
         """
-        print line
+        if re.search('Syntax error at end of file', line):
+            print line
+            filename = line.split()[-1]
+            return (filename.strip(), 0, 'Syntax error at end of file')
+
         parts = line.rsplit(':', 2)
 
-        # A lot of messages that don't correspond to a file line are also
+        # some messages that don't correspond to a file line are also
         # emitted
         assert len(parts) == 3
 
-        print parts[0]
         message, filename = parts[0].rsplit('at', 1)
         return (filename.strip(), int(parts[1]), message.strip())

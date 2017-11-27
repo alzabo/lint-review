@@ -18,6 +18,7 @@ class TestPuppetSyntax(TestCase):
     fixtures = [
         'tests/fixtures/puppetsyntax/no_errors.pp',
         'tests/fixtures/puppetsyntax/has_errors.pp',
+        'tests/fixtures/puppetsyntax/eof_error.pp',
     ]
 
     def setUp(self):
@@ -59,3 +60,11 @@ class TestPuppetSyntax(TestCase):
 
         good_syntax_filename = abspath(self.fixtures[0])
         eq_([], self.problems.all(good_syntax_filename))
+
+    @needs_puppet
+    def test_process_files__error_at_eof(self):
+        filename = abspath(self.fixtures[2])
+        self.tool.process_files([filename])
+        expected_problems = [Comment(filename, 0, 0,
+                                     'Syntax error at end of file')]
+        eq_(expected_problems, self.problems.all(filename))
