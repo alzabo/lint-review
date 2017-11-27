@@ -33,7 +33,7 @@ class Puppet(Tool):
         if bundle_exists('puppet-lint'):
             command = ['bundle', 'exec', 'puppet-lint']
         command += ['--log-format',
-                    '%{path}:%{linenumber}:%{KIND}:%{message}']
+                    '%{path}:%{line}:%{KIND}:%{message}']
         if self.options.get('config'):
             command += ['-c', self.apply_base(self.options['config'])]
         command += files
