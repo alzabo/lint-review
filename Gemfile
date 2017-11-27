@@ -1,6 +1,9 @@
+Encoding.default_external = Encoding::UTF_8
+
 source 'https://rubygems.org'
 
 gem 'rubocop', "~> 0.50"
+gem 'puppet', '~> 5.3'
 gem 'puppet-lint'
 gem 'puppet-lint-absolute_classname-check'
 gem 'puppet-lint-classes_and_types_beginning_with_digits-check'
