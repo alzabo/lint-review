@@ -6,6 +6,7 @@ import collections
 from xml.etree import ElementTree
 from six.moves import map
 import six
+import copy
 
 log = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ class Tool(object):
         self.base_path = base_path
         self.options = {}
         if isinstance(options, dict):
-            self.options = options
+            self.options = copy.deepcopy(options)
 
     def check_dependencies(self):
         """
